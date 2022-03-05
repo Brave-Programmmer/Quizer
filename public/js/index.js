@@ -191,7 +191,7 @@ $(submit).on("click", async e => {
         }
     }
     
-    axios.post("/quiz/setQuiz", obj).then(res => {
+    axios.post("/api/quiz/setQuiz", obj).then(res => {
         console.log(res)
     }).catch(err => {
         console.log(err)

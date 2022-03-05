@@ -20,17 +20,17 @@ require("./db/conn");
 
 app.use(express.static("./public"));
 
-app.post("/quiz/:id", async (req, res) => {
+app.post("/api/quiz/:id", async (req, res) => {
     const data = await quiz[req.params.id](req.body);
     return res.status(200).json(data);
 })
 
-app.post("/:id", async (req, res) => {
+app.post("/api/:id", async (req, res) => {
     const data = await bot[req.params.id](req.body);
     return res.status(200).json(data);
 })
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
     res.status(200).sendFile("./public/index.html");
 })
 
