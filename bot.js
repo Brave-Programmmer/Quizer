@@ -32,9 +32,33 @@ const client = new discord.Client(
     }
 );
 
+var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var passwordLength = 32;
+var password = "";
+var passTimeOut;
+const generateNewPass = () => {
+    var pass = "";
+    for (var i = 0; i <= passwordLength; i++) {
+        var randomNumber = Math.floor(Math.random() * chars.length);
+        pass += chars.substring(randomNumber, randomNumber +1);
+    }
+    password = pass;
+    process.env.QuizPassword = pass;
+    if (passTimeOut) clearTimeout(passTimeOut);
+    passTimeOut = setTimeout(generateNewPass, 1000 * 60 * 2);
+}
+generateNewPass();
+
 const sendMessage = async ({ body, options }) => {
     try {
         if(!body || !options) throw new Error("Provide Options and Body of the message");
+        
+        if(!options.password || options.password !== process.env.QuizPassword) {
+            return {
+                type: "error",
+                msg: "Password mismatch",
+            }
+        }
         
         const channel = await client.channels.fetch(options.channelId);
         const message = await channel.send(body);
@@ -61,6 +85,13 @@ const sendMessage = async ({ body, options }) => {
 const editMessage = async ({ body, options }) => {
     try {
         if(!body || !options) throw new Error("Provide Options and Body of the message");
+        
+        if(!options.password || options.password !== process.env.QuizPassword) {
+            return {
+                type: "error",
+                msg: "Password mismatch",
+            }
+        }
         
         const channel = await client.channels.fetch(options.channelId);
         const msg = await channel.messages.fetch(options.msgId);
@@ -103,24 +134,45 @@ const addReactions = async (message, reactions) => {
 }
 
 const getReactedUsers = async ({ options }) => {
-    const { channelId, msgId, emoji } = options;
-    let cacheChannel = await client.channels.fetch(channelId);
-    if(cacheChannel){
-        //const msg = await channel.messages.fetch(msgId);
-        const reactionMessage = await cacheChannel.messages.fetch(msgId);
-        // console.log(reactionMessage)
-        const userList = await reactionMessage.reactions.resolve(emoji).users.fetch();
-        return {
-            type: "success",
-            msg: "Reaction Fetched successfully",
-            data: userList.map((user) => user.id).filter((id) => id !== reactionMessage.author.id )
+    try {
+        if(!options.password || options.password !== process.env.QuizPassword) {
+            return {
+                type: "error",
+                msg: "Password mismatch",
+            }
         }
+        const { channelId, msgId, emoji } = options;
+        let cacheChannel = await client.channels.fetch(channelId);
+        if(cacheChannel){
+            //const msg = await channel.messages.fetch(msgId);
+            const reactionMessage = await cacheChannel.messages.fetch(msgId);
+            // console.log(reactionMessage)
+            const userList = await reactionMessage.reactions.resolve(emoji).users.fetch();
+            return {
+                type: "success",
+                msg: "Reaction Fetched successfully",
+                data: userList.map((user) => user.id).filter((id) => id !== reactionMessage.author.id )
+            }
+        }
+    } catch (err) {
+        console.error(chalk.red(">>===> getReactedUsers() \n"), err);
+        return {
+            type: "error",
+            msg: err
+        };
     }
 }
 
 const scheduleMessage = async ({ body, options }) => {
     try {
         if(!body || !options || !options.wait) throw new Error("Provide Options, schedule time and Body of the message");
+        
+        if(!options.password || options.password !== process.env.QuizPassword) {
+            return {
+                type: "error",
+                msg: "Password mismatch",
+            }
+        }
         
         // const scheduleTimeOut = setTimeout(async function() {
         //     const message = await sendMessage({ body, options });
@@ -175,6 +227,60 @@ const initScheduler = async () => {
     }
 }
 
+function isAdmin(msg) {
+    return msg.member.permissionsIn(msg.channel).has("ADMINISTRATOR")
+}
+
+const prefix1 = "Q!"
+const prefix2 = "q!"
+client.on('messageCreate', (message) => {
+	if (message.author.bot) return;
+	if (!message.content.startsWith(prefix1) && !message.content.startsWith(prefix2)) return;
+	
+	const commandBody = message.content.slice(prefix1.length);
+    const args = commandBody.split(' ');
+    const command = args.shift().toLowerCase();
+	
+	if (command === "generatenewpassword") {
+	    if (!isAdmin(message)) {
+	        message.reply({
+                "embeds": [
+                    {
+                        "title": "Unwanted Act Detected",
+                        "color": 16711680,
+                        "description": "**Applying for generating new password is an administrative act. You are not an admin of this channel. If you need to use this command, ask the owner or undersigned.**\n\n**Username:** " + message.author.username + "#" + message.author.discriminator + "\n**Id:** " + message.author.id,
+                        "timestamp": new Date(),
+                        "author": {
+                            "name": message .author.username + "#" + message.author.discriminator,
+                            "icon_url": message.author.displayAvatarURL()
+                        },
+                    }
+                ],
+            })
+	    } else {
+	        generateNewPass();
+	        message.reply({
+                "embeds": [
+                    {
+                        "title": "New Password Generated",
+                        "color": 65535,
+                        "description": "**A new password is generated for QUIZER Bot. This password is only valid till next 2 minutes.**\n\n**Username:** " + message.author.username + "#" + message.author.discriminator + "\n**Id:** " + message.author.id,
+                        "timestamp": new Date(),
+                        "author": {
+                            "name": message .author.username + "#" + message.author.discriminator,
+                            "icon_url": message.author.displayAvatarURL()
+                        },
+                    },
+                    {
+                        "color": 65535,
+                        "description": "**Password:** " + process.env.QuizPassword,
+                    }
+                ],
+            })
+	    }
+	}
+	
+});
 
 
 

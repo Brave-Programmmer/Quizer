@@ -15,16 +15,23 @@ Date.prototype.isValid = function () {
 const setQuiz = async ({ questionBody, answerBody, correctOption, time, timeOffset, options }) => {
     try {
         
+        if(!options.password || options.password !== process.env.QuizPassword) {
+            return {
+                type: "error",
+                msg: "Password mismatch",
+            }
+        }
+        
         if (
             (typeof questionBody === "object" && !Array.isArray(questionBody))
             &&
             (typeof answerBody === "object" && !Array.isArray(answerBody))
             &&
-            (typeof correctOption === "string")
+            (typeof correctOption === "string" || typeof correctOption === "numbee")
             &&
-            (typeof time === "string")
+            (typeof time === "number")
             &&
-            (typeof timeOffset === "string")
+            (typeof timeOffset === "string" || typeof timeOffset === "number")
             &&
             (typeof options === "object" && !Array.isArray(options))
         ) {
@@ -34,7 +41,7 @@ const setQuiz = async ({ questionBody, answerBody, correctOption, time, timeOffs
                 answerBody,
                 correctOption,
                 time: new Date(time),
-                timeOffset: new Date((new Date(time)).getTime() + parseInt(timeOffset, 10)),
+                timeOffset: new Date(timeOffset),
                 state: 1,
                 options
             }).save();
@@ -81,7 +88,8 @@ const askQuestion = async () => {
                         emojis[2],
                         emojis[3],
                         emojis[4],
-                    ]
+                    ],
+                    password: process.env.QuizPassword
                 }
             });
             post.state = 2;
@@ -112,7 +120,8 @@ const getWinner = async (post, correctOption) => {
                     emojis[2],
                     emojis[3],
                     emojis[4],
-                ][i]
+                ][i],
+                password: process.env.QuizPassword
             }
         })).data)
     }
@@ -151,11 +160,26 @@ const declareWinner = async () => {
             const winner = await getWinner(post, parseInt(post?.correctOption) - 1);
             
             const replacer = (obj) => {
+                const replaceArray = arr => {
+                    let newArray = [];
+                    for (const value of arr) {
+                        if (typeof value === "string") {
+                            newArray.pish(value.replace(/{winnerId}/g, `<@${winner}>`));
+                        } else if (typeof value === "object" && !Array.isArray(value)) {
+                            newArray.push(replacer(value));
+                        } else if (Array.isArray(value)) {
+                            newArray.push(replaceArray(value))
+                        }
+                    }
+                    return newArray;
+                }
                 for (const [key, value] of Object.entries(obj)) {
                     if (typeof value === "string") {
                         obj[key] = value.replace(/{winnerId}/g, `<@${winner}>`);
                     } else if (typeof value === "object" && !Array.isArray(value)) {
                         obj[key] = replacer(value);
+                    } else if (Array.isArray(value)) {
+                        obj[key] = replaceArray(value)
                     }
                 }
                 return obj;
@@ -164,7 +188,8 @@ const declareWinner = async () => {
             const message = await bot.sendMessage({
                 body: replacer(post?.answerBody),
                 options: {
-                    channelId: post?.options?.resultChannelId
+                    channelId: post?.options?.resultChannelId,
+                    password: process.env.QuizPassword
                 }
             });
             

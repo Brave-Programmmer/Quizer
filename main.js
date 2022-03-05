@@ -6,49 +6,34 @@ process.on('uncaughtException', (err, origin) => {
 
 require("dotenv").config();
 const bot = require("./bot");
-const http = require('http');
-var url = require('url');
 const quiz = require("./modules/quiz");
+
+const express = require("express");
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+
+app.use(require("body-parser").json());
+app.use(require("cors")());
 
 require("./db/conn");
 
-const requestListener = async function (req, res) {
-    const body = req.body;
-    var q = url.parse(req.url, true);
-    
-    if (req.method === 'POST') {
-        const module = q.pathname.replace(/\//, "");
-        const paths = module.split("/");
-        // console.log(paths)
-        if (paths.length > 0) {
-            if (paths[0] === "quiz") {
-                const data = await quiz[paths[1]](body);
-                return res.end(JSON.stringify(data));
-            } else {
-                const data = await bot[paths[0]](body);
-                return res.end(JSON.stringify(data));
-            }
-        }
-    }
-    
-    res.writeHead(200, {
-        'Content-Type': 'text/html'
-    });
-    return res.end('Hello, World!');
-}
+app.use(express.static("./public"));
 
-const server = http.createServer((req, res) => {
-    let data = '';
-    req.on('data', chunk => {
-        data += chunk;
-    });
-    
-    req.on('end', () => {
-        const body = JSON.parse(data);
-        req.body = body;
-        requestListener(req, res);
-    })
-});
+app.post("/quiz/:id", async (req, res) => {
+    const data = await quiz[req.params.id](req.body);
+    return res.status(200).json(data);
+})
+
+app.post("/:id", async (req, res) => {
+    const data = await bot[req.params.id](req.body);
+    return res.status(200).json(data);
+})
+
+app.get("/", (req, res) => {
+    res.status(200).sendFile("./public/index.html");
+})
+
 server.listen(3000, (err) => {
     if(err) console.error(err);
     console.log(">>===> Server is started.\n");

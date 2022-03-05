@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Embeder</title>
+    
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    
+    <header id="header">
+        <h2>QUIZER Bot</h2>
+        <div id="loader">
+            <div></div>
+        </div>
+    </header>
+    
+    <div id="container">
+        
+        <section id="editor">
+            
+            <form id="form" accept-charset="utf-8">
+                <ul>
+                    <li>
+                        <div class="button" id="clear">
+                            Clear Everything
+                        </div>
+                    </li>
+                    <br />
+                    <li>
+                        <label for="quiz_num">QUIZ NUMBER</label>
+                        <input
+                            type="number" 
+                            name="quiz_num" 
+                            id="quiz_num" 
+                            value="0"
+                            placeholder="Quiz Number Here..."
+                        />
+                    </li>
+                    <br />
+                    <li>
+                        <label for="question">Question</label>
+                        <textarea
+                            type="number"
+                            name="question"
+                            id="question"
+                            placeholder="Enter Your Question Here..."
+                        ></textarea>
+                    </li>
+                    <br />
+                    <li>
+                        <ul id="options">
+                            <h3>Options </h3>
+                            <li>
+                                <label for="opt1">
+                                    <img src="https://twemoji.maxcdn.com/v/13.0.1/svg/31-20e3.svg" />
+                                </label>
+                                <textarea
+                                    type="number"
+                                    name="opt1"
+                                    id="opt1"
+                                    placeholder="Enter Your Option Here..."
+                                ></textarea>
+                            </li>
+                            <li>
+                                <label for="opt2">
+                                    <img src="https://twemoji.maxcdn.com/v/13.0.1/svg/32-20e3.svg" />
+                                </label>
+                                <textarea
+                                    type="number"
+                                    name="opt2"
+                                    id="opt2"
+                                    placeholder="Enter Your Option Here..."
+                                ></textarea>
+                            </li>
+                            <li>
+                                <label for="opt3">
+                                    <img src="https://twemoji.maxcdn.com/v/13.0.1/svg/33-20e3.svg" />
+                                </label>
+                                <textarea
+                                    type="number"
+                                    name="opt3"
+                                    id="opt3"
+                                    placeholder="Enter Your Option Here..."
+                                ></textarea>
+                            </li>
+                            <li>
+                                <label for="opt4">
+                                    <img src="https://twemoji.maxcdn.com/v/13.0.1/svg/34-20e3.svg" />
+                                </label>
+                                <textarea
+                                    type="number"
+                                    name="opt4"
+                                    id="opt4"
+                                    placeholder="Enter Your Option Here..."
+                                ></textarea>
+                            </li>
+                        </ul>
+                    </li>
+                    <br />
+                    <li>
+                        <label for="correct_opt">Correct Option</label></label>
+                        <select
+                            type="number" 
+                            name="correct_opt"
+                            placeholder="Correct Option Here..."
+                            id="correct_opt">
+                           <option selected>Option 1</option>
+                           <option>Option 2</option>
+                           <option>Option 3</option>
+                           <option>Option 4</option>
+                        </select>
+                    </li>
+                    <br />
+                    <li>
+                        <label for="time">Time To Start Host</label></label>
+                        <div id="time" class='input-group date'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </li>
+                    <br />
+                    <li>
+                        <label for="timeend">Time To End Host</label></label>
+                        <div id="timeend" class='input-group date'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </li>
+                    <br />
+                    <li>
+                        <label for="quiz_channel">Enter Quiz Channel ID </label>
+                        <input
+                            type="number" 
+                            name="quiz_channel"
+                            placeholder="Your Quiz Channel ID Here..."
+                            id="quiz_channel"
+                        />
+                    </li>
+                    <br />
+                    <li>
+                        <label for="winner_channel">Enter Winners Channel ID </label>
+                        <input
+                            type="number" 
+                            name="winner_channel"
+                            placeholder="Your Winners Channel ID Here..."
+                            id="winner_channel"
+                        />
+                    </li>
+                    <br />
+                    <li>
+                        <label for="password">Enter Password</label>
+                        <input
+                            type="text" 
+                            name="password"
+                            placeholder="Your Password Here..."
+                            id="password"
+                        />
+                    </li>
+                    <br />
+                    <li>
+                        <div class="button" id="submit">
+                            Start Quiz
+                        </div>
+                    </li>
+                </ul>
+            </form>
+            
+        </section>
+        
+        <footer>
+            <h3>QUIZER BOT</h3>
+            <p>Specially crafted for creating quizes automatic and punctual.</p>
+            <p>No-Copyright © All rights reserved.</p>
+        </footer>
+        
+    </div>
+	
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>

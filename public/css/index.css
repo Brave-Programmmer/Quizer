@@ -1,0 +1,198 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    /*overflow: hidden;*/
+    background-color: #1e2124;
+    color: #fff;
+    font-family: system-ui;
+    user-select: none;
+    position: relative;
+}
+
+#header {
+    width: 100%;
+    height: 50px;
+    background-color: #111;
+    position: fixed;
+    top: 0;
+    z-index: 999999999;
+}
+
+#header h2 {
+    line-height: 50px;
+    padding-left: 10px;
+    top: 0;
+    position: relative;
+    margin: 0;
+}
+
+#header #loader {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0px;
+}
+
+#header #loader div {
+    height: 100%;
+    background-color: #f00;
+    width: 0%;
+}
+
+#container {
+    top: 50px;
+    height: calc(100% - 50px);
+    width: 100%;
+    overflow: auto;
+    position: relative;
+    background-color: #f0;
+}
+
+section#editor {
+    width: 100%;
+    position: relative;
+}
+
+#editor form#form {
+    width: 100%;
+    position: relative;
+}
+
+#editor form#form ul {
+    width: calc(100% - 20px);
+    max-width: 500px;
+    margin: 10px auto;
+    background-color: rgb(44,47,51);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#editor form#form ul li {
+    list-style: none;
+}
+
+label {
+    width: 100%;
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    padding-left: 10px;
+    margin: 3px 0;
+}
+
+label img {
+    height: 30px;
+}
+
+input, textarea, select {
+    width: 100%;
+    display: block;
+    outline: none;
+    padding: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    background-color: #1e2124;
+    color: #fff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px;
+    max-height: 400px;
+    font-size: 16px;
+}
+
+select {
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+    background-image: url("data:image/svg+xml,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><path fill='%23ffffff' d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 97% 50%;
+    padding: 10px;
+}
+
+ul#options {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-left: 10px !important;
+}
+
+#options li {
+    margin: 2px 0;
+}
+
+#options li label {
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 !important;
+}
+
+#options li textarea {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 35px);
+}
+
+.date {
+    background-color: #1e2124;
+    color: #fff;
+}
+
+.date input, .date .input-group-addon, .date .glyphicon.glyphicon-calendar {
+    background-color: #1e2124;
+    color: #fff;
+}
+
+.bootstrap-datetimepicker-widget {
+    background-color: rgb(44,47,51);
+    color: #fff;
+    border-radius: 8px;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    background-color: #1e2124;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.button:active {
+    opacity: 0.6;
+}
+
+footer {
+    width: calc(100% - 20px);
+    max-width: 500px;
+    margin: 10px auto;
+    background-color: rgb(44,47,51);
+    padding:  10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+footer h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+footer p {
+    font-weight: 600;
+}

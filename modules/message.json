@@ -1,0 +1,32 @@
+{                                                       channelId: '948237579428446219',
+  guildId: '936821729278443591',
+  id: '949441365501181982',                                              createdTimestamp: 1646434861303,                                       type: 'DEFAULT',
+  system: false,                                                         content: 'Q!generateNewPassword',                                      author: User {
+    id: '759444802205909002',                                              bot: false,                                                            system: false,
+    flags: UserFlags { bitfield: 0 },                                      username: '𝗖𝗼𝗱𝗲𝗪𝗶𝘁𝗵𝗔𝗿𝗶𝗳',                                              discriminator: '6046',
+    avatar: 'e10baab3b3cb7a8b664fd191a9543ee5',                            banner: undefined,                                                     accentColor: undefined
+  },                                                                     pinned: false,
+  tts: false,
+  nonce: '955612145767153664',                                           embeds: [],
+  components: [],
+  attachments: Collection(0) [Map] {},
+  stickers: Collection(0) [Map] {},
+  editedTimestamp: null,
+  reactions: ReactionManager { message: [Circular *1] },
+  mentions: MessageMentions {
+    everyone: false,
+    users: Collection(0) [Map] {},
+    roles: Collection(0) [Map] {},
+    _members: null,
+    _channels: null,
+    crosspostedChannels: Collection(0) [Map] {},
+    repliedUser: null
+  },
+  webhookId: null,
+  groupActivityApplication: null,
+  applicationId: null,
+  activity: null,
+  flags: MessageFlags { bitfield: 0 },
+  reference: null,
+  interaction: null
+}
